@@ -1,0 +1,23 @@
+const express = require("express");
+const connectDB = require("./Config/db");
+const app = express();
+require("dotenv").config();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const PORT = process.env.PORT || 5000;
+
+connectDB();
+
+app.get("/", (req, res) => {
+  res.json({
+    msg: "Welcome to the Authentication API 1.0",
+  });
+});
+
+app.use("/api/user/auth", require("./route/userRoute"));
+
+app.listen(PORT, (req, res) => {
+  console.log(`server is running on PORT : ${PORT}`);
+});

@@ -1,0 +1,173 @@
+Backend Basics (Node.js + Express)
+
+1. Server kya hota hai aur kyu banate hain
+
+Server ek program hota hai jo client (browser, React app, mobile app,
+Postman) se aane wali HTTP requests ko receive karta hai aur unko
+response bhejta hai.
+
+Simple flow: Client → Request → Server (Node.js + Express) → Processing
+/ Database → Response
+
+Agar server nahi hoga to: - API endpoints exist nahi karenge - client
+request handle nahi hogi - database se data fetch nahi hoga
+
+Example Express server:
+
+const express = require(“express”); const app = express();
+
+app.get(“/”, (req, res) => { res.send(“Server is running”); });
+
+app.listen(5000, () => { console.log(“Server started on port 5000”); });
+
+Short line: Server client ki request ko handle karta hai aur response
+bhejta hai.
+
+------------------------------------------------------------------------
+
+2. package.json scripts kya hoti hain
+
+Example:
+
+“scripts”: { “dev”: “nodemon ./server.js”, “start”: “node
+./backend/server.js” }
+
+Scripts basically predefined commands hoti hain jo npm run se execute hoti hain.
+
+------------------------------------------------------------------------
+
+3. npm run dev kya karta hai
+npm run dev npm script command hai jo package.json ke scripts section me define hoti hai.
+
+npm run dev ka use kya hai
+
+Use: development ke time server run karne ke liye.
+
+Command: npm run dev
+
+Ye run karta hai: nodemon ./server.js
+
+Nodemon ka kaam: - agar code change hota hai to server automatically
+restart ho jata hai
+
+Isliye development me nodemon use hota hai.
+
+------------------------------------------------------------------------
+
+4. npm start kya karta hai
+
+Command: npm start
+
+Ye run karta hai: node ./backend/server.js
+
+Isme: - normal node run hota hai - automatic restart nahi hota - mostly
+production me use hota hai
+
+------------------------------------------------------------------------
+
+5. Development vs Production
+
+Development: Jab developer application bana raha hota hai, testing aur
+debugging kar raha hota hai.
+
+Example: npm run dev
+
+Production: Jab application live ho jati hai aur real users use karte
+hain.
+
+Example: npm start
+
+Short difference: Development = build + testing phase Production = live
+users phase
+
+------------------------------------------------------------------------
+
+6. dependencies vs devDependencies
+
+dependencies: Wo packages jo application run karne ke liye production me
+bhi required hote hain.
+
+Examples: - express - mongoose - jsonwebtoken
+
+Install: npm install express
+
+devDependencies: Wo packages jo sirf development ke time use hote hain.
+
+Examples: - nodemon - eslint - prettier
+
+Install: npm install nodemon –save-dev
+
+Short difference: dependencies → app run karne ke liye devDependencies →
+development tools
+
+A .env file is a plain text configuration
+ file used to define environment-specific variables 
+ (API keys, database URLs, ports) outside of application
+  code. It follows a KEY=VALUE format, allowing developers to
+   manage secrets and settings across different environments (dev, staging, prod) without hardcoding them
+
+   1️⃣ async / await kyu lagate hain
+
+Node.js me kuch operation asynchronous hote h isiliye
+
+Database connect
+
+Database se data lana
+
+API call
+
+File read
+
+Ye sab Promise return karte hain.
+
+Isliye:
+
+await → result aane ka wait karta hai
+
+async → function ko allow karta hai await use karne ke liye
+
+(req , res)
+Jab client (browser / frontend) server ko request bhejta hai to Express us function ko 2 objects deta hai:
+
+1️⃣ req → Request Object
+
+req me client ki sari information hoti hai.
+
+Example:
+
+URL
+
+query
+
+params
+
+body
+
+headers
+
+2️⃣ res → Response Object
+
+res ka use client ko response bhejne ke liye hota hai.
+
+// req.body => user ne jo form me data bheja
+req.params.id => URL se ane wali ID "Jo ID URL me aayi hai us product ko delete karo"
+In web development using the Express.js framework, req.params.id is a property used 
+to access the dynamic value of the id route parameter from the URL
+
+👉 { new: true } lagane se:
+
+updated (naya) data return hota hai
+
+Body Parser => body parser is a middleware function that parse incoming request and there are two types
+
+1. express.json() ye json data ko (parse/object) krta hai
+2. express.(urlEncoded({extended : true})) ye formData ko (parse/object) krta h
+
+ express.json() => is a built-in
+ middleware function in the Express.js framework for Node.js. 
+ It parses incoming request payloads with JSON data and makes 
+ the parsed data available in the req.body property of the request object.
+
+ 👉 Controller ek function (ya set of functions) hota hai
+  jo incoming request ko handle karta hai, business 
+  logic and logic etc. apply karta hai, aur response return karta hai.
