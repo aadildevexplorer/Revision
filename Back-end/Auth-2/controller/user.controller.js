@@ -43,6 +43,7 @@ const loginUser = expressAsyncHandler(async (req, res) => {
   }
 
   const user = await User.findOne({ email });
+  const isMatch = await bcrypt.compare(password, user.password);
 
   if (user) {
     res.status(201).json({
@@ -53,9 +54,9 @@ const loginUser = expressAsyncHandler(async (req, res) => {
       id: user?.id,
       token: generateToken(user._id),
     });
-  } else {
-    res.status(404).json({ error: "Invalid Credential" });
+  } else if (!isMatch) {
+    return res.status(401).json({ error: "Invalid Credentials" });
   }
 });
 
-module.exports = { registerUser , loginUser};
+module.exports = { registerUser, loginUser };

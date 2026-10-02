@@ -1,16 +1,33 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addTodo } from "../store/Features/todoSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo, editTodo } from "../Crud/todoSlice";
 
 const AddTodo = () => {
   const [input, setInput] = useState("");
   const dispatch = useDispatch();
 
+  const { editItem } = useSelector((state) => state.todos);
+
   const addTodoHandler = (e) => {
     e.preventDefault();
-    dispatch(addTodo(input));
+    if (editItem) {
+      dispatch(
+        editTodo({
+          id: editItem.id,
+          text: input,
+        }),
+      );
+    } else {
+      dispatch(addTodo(input));
+    }
     setInput("");
   };
+
+  useEffect(() => {
+    if (editItem) {
+      setInput(editItem.text);
+    }
+  }, [editItem]);
 
   return (
     <>
@@ -22,7 +39,7 @@ const AddTodo = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
-          <button type="submit">Submit</button>
+        <button type="submit">{editItem ? "Update Task" : "Add Task"}</button>
         </div>
       </form>
     </>
